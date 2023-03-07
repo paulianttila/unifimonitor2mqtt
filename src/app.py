@@ -66,7 +66,7 @@ class MyApp:
 
     # Do work
     def do_update(self, trigger_source: TriggerSource) -> None:
-        self.logger.debug("update called, trigger_source=%s", trigger_source)
+        self.logger.debug(f"update called, trigger_source={trigger_source}")
 
         allusers = self.fetch_user_list()
         old_user_list = self.read_list_from_file(self.config["DATA_FILE"])
@@ -76,7 +76,7 @@ class MyApp:
 
         difference = self.diff(old_user_list, new_user_list)
         length = len(difference)
-        self.logger.info("New users found: %d", length)
+        self.logger.info(f"New users found: {length}")
 
         new_users = []
 
@@ -130,14 +130,14 @@ class MyApp:
 
         try:
             allusers = ctrl.get_users()
-        except Exception as e:
+        except Exception:
             self.fecth_errors_metric.inc()
             raise
         self.logger.debug(allusers)
         self.log_users(allusers)
         return allusers
 
-    def log_users(self, allusers):
+    def log_users(self, allusers) -> None:
         self.logger.debug("Current user list: %d", len(allusers))
         for user in allusers:
             self.logger.debug(
@@ -147,22 +147,22 @@ class MyApp:
                 user.get("name"),
             )
 
-    def diff(self, list1, list2):
+    def diff(self, list1, list2) -> list:
         return list(set(list1).symmetric_difference(set(list2)))
 
-    def write_list_to_file(self, filename, list):
+    def write_list_to_file(self, filename, list) -> None:
         with open(filename, "w") as f:
             for i in list:
                 f.write(i + "\n")
 
-    def read_list_from_file(self, filename):
+    def read_list_from_file(self, filename) -> list:
         if os.path.exists(filename):
             with open(filename, "r") as f:
                 return [line.rstrip("\n") for line in f]
         else:
             return []
 
-    def append_line_to_file(self, filename, line):
+    def append_line_to_file(self, filename, line) -> None:
         with open(filename, "a+") as f:
             f.write(line + "\n")
 
