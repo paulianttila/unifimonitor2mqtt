@@ -71,9 +71,7 @@ class MyApp:
         allusers = self.fetch_user_list()
         old_user_list = self.read_list_from_file(self.config["DATA_FILE"])
 
-        new_user_list = []
-        for user in allusers:
-            new_user_list.append(user["mac"])
+        new_user_list = [user["mac"] for user in allusers]
         new_user_list.sort()
 
         difference = self.diff(old_user_list, new_user_list)
@@ -90,7 +88,7 @@ class MyApp:
                         if self.config["LOG_TO_FILE"]:
                             self.append_line_to_file(
                                 self.config["LOG_TO_FILE"],
-                                str(datetime.now()) + ": " + str(user),
+                                f"{datetime.now()}: {user}",
                             )
                         new_users.append(user)
                         self.logger.info(
@@ -100,7 +98,7 @@ class MyApp:
                             user.get("name"),
                         )
 
-        if len(new_users) > 0:
+        if new_users:
             jsonString = json.dumps(new_users)
             self.publish_value_to_mqtt_topic(
                 "newUsersChanged",
