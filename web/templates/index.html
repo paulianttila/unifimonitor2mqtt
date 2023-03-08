@@ -1,5 +1,45 @@
 <!DOCTYPE html>
 <html>
+<style>
+table {
+    border:1px solid #b3adad;
+    border-collapse:collapse;
+    padding:5px;
+}
+table th {
+    border:1px solid #b3adad;
+    padding:5px;
+    background: #f0f0f0;
+    color: #313030;
+}
+table td {
+    border:1px solid #b3adad;
+    text-align:center;
+    padding:5px;
+    background: #ffffff;
+    color: #313030;
+}
+details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 0.5em 0.5em 0;
+}
+
+summary {
+    font-weight: bold;
+    margin: -0.5em -0.5em 0;
+    padding: 0.5em;
+}
+
+details[open] {
+    padding: 0.5em;
+}
+
+details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 0.5em;
+}
+</style>
 <head>
     <title>unifimonitor2mqtt</title>
 </head>
@@ -14,16 +54,19 @@
         
     {% for user in users %}
     <tr>
-        <th>{{user.mac}}</th>
-        <th>{{user.hostname}}</th> 
-        <th>{{user.name}}</th>
+        <td>{{user.mac}}</td>
+        <td>{{user.hostname}}</td> 
+        <td>{{user.name}}</td>
     </tr>
     {% endfor %}
     </table>
 
     <br>
-    <h1>Raw user list</h1>
     <br>
-    <pre>{{ json }}</pre>
+
+    <details>
+        <summary>Raw user list</summary>
+        <pre>{{ json }}</pre>
+    </details>
 </body>
 </html>
