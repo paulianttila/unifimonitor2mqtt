@@ -68,35 +68,24 @@ class MyApp:
     def do_update(self, trigger_source: TriggerSource) -> None:
         self.logger.debug(f"update called, trigger_source={trigger_source}")
 
-        allusers = self.fetch_user_list()
-        old_user_list = self.read_list_from_file(self.config["DATA_FILE"])
+        users = self.fetch_user_list()
+        old_user_macs = self.read_list_from_file(self.config["DATA_FILE"])
 
-        new_user_list = [user["mac"] for user in allusers]
-        new_user_list.sort()
+        new_user_macs = [user["mac"] for user in users]
+        new_user_macs.sort()
 
-        difference = self.diff(old_user_list, new_user_list)
-        length = len(difference)
-        self.logger.info(f"New users found: {length}")
+        new_macs = self.diff(old_user_macs, new_user_macs)
+        new_macs_count = len(new_macs)
+        self.logger.info(f"New users found: {new_macs_count}")
 
         new_users = []
 
-        if length > 0:
-            self.write_list_to_file(self.config["DATA_FILE"], new_user_list)
-            for usr in difference:
-                for user in allusers:
-                    if usr == user["mac"]:
-                        if self.config["LOG_TO_FILE"]:
-                            self.append_line_to_file(
-                                self.config["LOG_TO_FILE"],
-                                f"{datetime.now()}: {user}",
-                            )
-                        new_users.append(user)
-                        self.logger.info(
-                            "%20s | %-30s  %-40s",
-                            user.get("mac"),
-                            user.get("hostname"),
-                            user.get("name"),
-                        )
+        if new_macs_count > 0:
+            self.write_list_to_file(self.config["DATA_FILE"], new_user_macs)
+            for mac in new_macs:
+                if user := self.get_user(mac, users):
+                    new_users.append(user)
+                    self.hanle_new_user(user)
 
         if new_users:
             jsonString = json.dumps(new_users)
@@ -106,6 +95,25 @@ class MyApp:
                 True,
             )
             self.publish_value_to_mqtt_topic("newUsers", jsonString, True)
+
+    def get_user(self, mac, users):
+        for user in users:
+            if mac == user["mac"]:
+                return user
+       
+    def hanle_new_user(self, user):
+        if self.config["LOG_TO_FILE"]:
+            self.append_line_to_file(
+                self.config["LOG_TO_FILE"],
+                f"{datetime.now()}: {user}",
+            )
+
+        mac = user.get('mac')
+        hostname = user.get('hostname')
+        name = user.get('name')
+        self.logger.info(
+            f"New user details: mac={mac}, hostname={hostname}, name={name}"
+        )
 
     def result_page(self):
         allusers = self.fetch_user_list()
