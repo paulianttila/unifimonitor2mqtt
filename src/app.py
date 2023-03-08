@@ -109,7 +109,17 @@ class MyApp:
 
     def result_page(self):
         allusers = self.fetch_user_list()
-        return render_template("index.html", userlist=json.dumps(allusers, indent=2))
+        user_list = [
+            {
+                "mac": user.get("mac"),
+                "hostname": user.get("hostname"),
+                "name": user.get("name"),
+            }
+            for user in allusers
+        ]
+        return render_template(
+            "index.html", json=json.dumps(allusers, indent=2), users=user_list
+        )
 
     def fetch_user_list(self):
         self.logger.debug(
@@ -139,9 +149,12 @@ class MyApp:
 
     def log_users(self, allusers) -> None:
         self.logger.debug("Current user list: %d", len(allusers))
+        self.logger.debug(" %-17s  %-40s %-40s", "MAC", "HOSTNAME", "NAME")
+        self.logger.debug("".ljust(100, "-"))
+
         for user in allusers:
             self.logger.debug(
-                "%20s | %-30s  %-40s",
+                " %-17s  %-40s %-40s",
                 user.get("mac"),
                 user.get("hostname"),
                 user.get("name"),

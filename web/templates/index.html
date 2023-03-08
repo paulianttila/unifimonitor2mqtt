@@ -5,7 +5,25 @@
 </head>
 <body>
     <h1>User list</h1>
+    <table>
+    <tr>
+        <th>MAC</th>
+        <th>HOSTNAME</th> 
+        <th>NAME</th>
+    </tr>
+        
+    {% for user in users %}
+    <tr>
+        <th>{{user.mac}}</th>
+        <th>{{user.hostname}}</th> 
+        <th>{{user.name}}</th>
+    </tr>
+    {% endfor %}
+    </table>
+
     <br>
-    <pre>{{ userlist }}</pre>
+    <h1>Raw user list</h1>
+    <br>
+    <pre>{{ json }}</pre>
 </body>
 </html>
