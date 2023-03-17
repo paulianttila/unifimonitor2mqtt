@@ -48,7 +48,7 @@ class MyApp:
         self.exit = False
 
     def get_version(self) -> str:
-        return "1.0.0"
+        return "2.0.0"
 
     def stop(self) -> None:
         self.logger.debug("Stopping...")
@@ -100,7 +100,7 @@ class MyApp:
         for user in users:
             if mac == user["mac"]:
                 return user
-       
+
     def hanle_new_user(self, user):
         if self.config["LOG_TO_FILE"]:
             self.append_line_to_file(
@@ -108,9 +108,9 @@ class MyApp:
                 f"{datetime.now()}: {user}",
             )
 
-        mac = user.get('mac')
-        hostname = user.get('hostname')
-        name = user.get('name')
+        mac = user.get("mac")
+        hostname = user.get("hostname")
+        name = user.get("name")
         self.logger.info(
             f"New user details: mac={mac}, hostname={hostname}, name={name}"
         )
@@ -189,4 +189,4 @@ class MyApp:
 
 
 if __name__ == "__main__":
-    Framework().start(MyApp(), MyConfig(), blocked=True)
+    Framework().run(MyApp(), MyConfig())
