@@ -100,7 +100,7 @@ class MyApp:
         for user in users:
             if mac == user["mac"]:
                 return user
-       
+
     def hanle_new_user(self, user):
         if self.config["LOG_TO_FILE"]:
             self.append_line_to_file(
@@ -108,9 +108,9 @@ class MyApp:
                 f"{datetime.now()}: {user}",
             )
 
-        mac = user.get('mac')
-        hostname = user.get('hostname')
-        name = user.get('name')
+        mac = user.get("mac")
+        hostname = user.get("hostname")
+        name = user.get("name")
         self.logger.info(
             f"New user details: mac={mac}, hostname={hostname}, name={name}"
         )
