@@ -18,5 +18,8 @@ COPY src ${DIR}
 
 RUN addgroup -S ${GROUP} && adduser -S ${USER} -G ${GROUP}
 
+VOLUME /data
+WORKDIR /data
+
 USER ${USER}
 CMD python ${DIR}/${APP}
