@@ -20,13 +20,13 @@ class MyConfig(Config):
 
     # App specific variables
 
-    UNIFI_HOST = "127.0.0.1"
+    UNIFI_HOST = None
     UNIFI_PORT = 443
     UNIFI_SITE = "default"
-    UNIFI_USERNAME = "admin"
+    UNIFI_USERNAME = None
     UNIFI_PASSWORD = None
     LOG_TO_FILE = None
-    DATA_FILE = "~/data.txt"
+    DATA_FILE = "/data/data.txt"
 
 
 class MyApp:
@@ -45,14 +45,11 @@ class MyApp:
         )
 
         self.add_url_rule("/", view_func=self.result_page)
-        self.exit = False
 
     def get_version(self) -> str:
         return "2.0.0"
 
     def stop(self) -> None:
-        self.logger.debug("Stopping...")
-        self.exit = True
         self.logger.debug("Exit")
 
     def subscribe_to_mqtt_topics(self) -> None:

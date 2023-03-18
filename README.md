@@ -9,11 +9,11 @@ See commonn environment variables from [MQTT-Framework](https://github.com/pauli
 | **Variable**               | **Default**        | **Descrition**                                              |
 |----------------------------|--------------------|-------------------------------------------------------------|
 | CFG_APP_NAME               | unifimonitor2mqtt  | Name of the app.                                            |
-| CFG_UNIFI_HOST             | 127.0.0.1          | UniFi controller address.                                   |
+| CFG_UNIFI_HOST             |                    | UniFi controller address.                                   |
 | CFG_UNIFI_PORT             | 443                | UniFi controller port.                                      |
 | CFG_UNIFI_USERNAME         |                    | Username for UniFi controller.                              |
 | CFG_UNIFI_PASSWORD         |                    | Password for UniFi controller.                              |
-| DATA_FILE                  | ~/data.txt         | File name for data.                                         |
+| DATA_FILE                  | /data/data.txt     | File name for data.                                         |
 
 
 ## Example docker-compose.yaml
@@ -26,8 +26,6 @@ services:
     container_name: unifimonitor2mqtt
     image: paulianttila/unifimonitor2mqtt:2.0.0
     restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
     environment:
       - CFG_LOG_LEVEL=DEBUG
       - CFG_MQTT_BROKER_URL=127.0.0.1
