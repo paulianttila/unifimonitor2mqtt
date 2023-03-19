@@ -25,6 +25,7 @@ class MyConfig(Config):
     UNIFI_SITE = "default"
     UNIFI_USERNAME = None
     UNIFI_PASSWORD = None
+    UNIFI_VERSION = "UDMP-unifiOS"
     LOG_TO_FILE = None
     DATA_FILE = "/data/data.txt"
 
@@ -146,7 +147,7 @@ class MyApp:
             self.config["UNIFI_USERNAME"],
             self.config["UNIFI_PASSWORD"],
             site_id=self.config["UNIFI_SITE"],
-            version="UDMP-unifiOS",
+            version=self.config["UNIFI_VERSION"],
             ssl_verify=False,
         )
 

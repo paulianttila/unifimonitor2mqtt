@@ -13,6 +13,7 @@ See commonn environment variables from [MQTT-Framework](https://github.com/pauli
 | CFG_UNIFI_PORT             | 443                | UniFi controller port.                                      |
 | CFG_UNIFI_USERNAME         |                    | Username for UniFi controller.                              |
 | CFG_UNIFI_PASSWORD         |                    | Password for UniFi controller.                              |
+| CFG_UNIFI_VERSION          | UDMP-unifiOS       | UniFi controller API version. v4|v5|unifiOS|UDMP-unifiOS    |
 | DATA_FILE                  | /data/data.txt     | File name for data.                                         |
 
 
