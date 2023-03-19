@@ -65,7 +65,15 @@ class MyApp:
     def do_update(self, trigger_source: TriggerSource) -> None:
         self.logger.debug(f"update called, trigger_source={trigger_source}")
 
-        users = self.fetch_user_list()
+        self.succesfull_fecth_metric.inc()
+
+        try:
+            users = self.fetch_user_list()
+        except Exception as e:
+            self.fecth_errors_metric.inc()
+            self.logger.error(f"Error occured: {e}")
+            return
+        
         old_user_macs = self.read_list_from_file(self.config["DATA_FILE"])
 
         new_user_macs = [user["mac"] for user in users]
@@ -132,7 +140,6 @@ class MyApp:
             self.config["UNIFI_HOST"],
             self.config["UNIFI_PORT"],
         )
-        self.succesfull_fecth_metric.inc()
 
         ctrl = Controller(
             self.config["UNIFI_HOST"],
@@ -143,11 +150,7 @@ class MyApp:
             ssl_verify=False,
         )
 
-        try:
-            allusers = ctrl.get_users()
-        except Exception:
-            self.fecth_errors_metric.inc()
-            raise
+        allusers = ctrl.get_users()
         self.logger.debug(allusers)
         self.log_users(allusers)
         return allusers
