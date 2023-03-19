@@ -74,7 +74,7 @@ class MyApp:
             self.fecth_errors_metric.inc()
             self.logger.error(f"Error occured: {e}")
             return
-        
+
         old_user_macs = self.read_list_from_file(self.config["DATA_FILE"])
 
         new_user_macs = [user["mac"] for user in users]
